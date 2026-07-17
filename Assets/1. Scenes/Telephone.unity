@@ -498,7 +498,7 @@ MonoBehaviour:
   wheel: {fileID: 776708642}
   holdBar: {fileID: 300815568}
   rotateRate: 90
-  tolerance: 12
+  tolerance: 15
   holdDuration: 1
   wheelDrift: 25
   plateDrift: -18

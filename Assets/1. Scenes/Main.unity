@@ -334,7 +334,7 @@ MonoBehaviour:
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
-            m_StringArgument: Thelephone
+            m_StringArgument: Telephone
             m_BoolArgument: 0
           m_CallState: 2
 --- !u!61 &886048511
@@ -997,6 +997,63 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 10.24, y: 7.33}
   m_EdgeRadius: 0
+--- !u!1001 &1584027404
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3880273739279111591, guid: 69dd68c552577cc4d9e7d1ddb4a6dd0b, type: 3}
+      propertyPath: m_Name
+      value: SoundManager (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8406546704386453789, guid: 69dd68c552577cc4d9e7d1ddb4a6dd0b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8406546704386453789, guid: 69dd68c552577cc4d9e7d1ddb4a6dd0b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8406546704386453789, guid: 69dd68c552577cc4d9e7d1ddb4a6dd0b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8406546704386453789, guid: 69dd68c552577cc4d9e7d1ddb4a6dd0b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8406546704386453789, guid: 69dd68c552577cc4d9e7d1ddb4a6dd0b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8406546704386453789, guid: 69dd68c552577cc4d9e7d1ddb4a6dd0b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8406546704386453789, guid: 69dd68c552577cc4d9e7d1ddb4a6dd0b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8406546704386453789, guid: 69dd68c552577cc4d9e7d1ddb4a6dd0b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8406546704386453789, guid: 69dd68c552577cc4d9e7d1ddb4a6dd0b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8406546704386453789, guid: 69dd68c552577cc4d9e7d1ddb4a6dd0b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 69dd68c552577cc4d9e7d1ddb4a6dd0b, type: 3}
 --- !u!224 &1711896375 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5121378813344949661, guid: 48d122df89f7d3841876fd4e36c23dc7, type: 3}
@@ -1217,3 +1274,4 @@ SceneRoots:
   - {fileID: 1908596883}
   - {fileID: 971593772}
   - {fileID: 737523992}
+  - {fileID: 1584027404}

@@ -31,15 +31,17 @@ public class SoundManager : MonoBehaviour
     }
     void Awake()
     {
-        if (soundManager != null)
+        if (soundManager == null)
         {
-            Destroy(gameObject);
-            
+            soundManager = this;
+            DontDestroyOnLoad(gameObject);
+
         }
         else {
         soundManager = this;
+            Destroy(gameObject);
         }
-        DontDestroyOnLoad(gameObject);
+
         soundManager.BGM.Play();
         soundManager.StartCoroutine(FadeInVol(BGM));
 

@@ -48,6 +48,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BGM: {fileID: 1080734821121966917}
+  clockTickSFX: {fileID: 1001976837135094901}
 --- !u!82 &596465660379658207
 AudioSource:
   m_ObjectHideFlags: 0

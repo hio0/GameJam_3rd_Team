@@ -24,27 +24,17 @@ public class Radio : MonoBehaviour
     public float PitchAccuracy => 1f - Mathf.Clamp01(Mathf.Abs(currentPitch - 1f) / pitchErrorRange);
     public float DistortionAccuracy => 1f - currentDistortion;
 
-    private void OnEnable()
-    {
-        
-    }
-
     private void OnDisable() => UnSubscribe();
 
     private void Start()
     {
         Apply();
-
+        SoundManager.soundManager.StartCoroutine(SoundManager.soundManager.FadeInVol(RadioAudio));
         FixManager.fix.p1_AMove += PitchDown;
         FixManager.fix.p1_DMove += PitchUp;
         FixManager.fix.p2_LeftMove += DistortionDown;
         FixManager.fix.p2_RightMove += DistortionUp;
     }
-    private void Awake()
-    {
-
-
-    } 
     private void PitchUp()   => SetPitch(currentPitch + pitchRate * Time.deltaTime);
     private void PitchDown() => SetPitch(currentPitch - pitchRate * Time.deltaTime);
     private void DistortionUp()   => SetDistortion(currentDistortion + distortionRate * Time.deltaTime);

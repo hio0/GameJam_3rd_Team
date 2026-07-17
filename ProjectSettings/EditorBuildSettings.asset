@@ -14,4 +14,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/1. Scenes/Radio.unity
     guid: 677b6b69f12f33a49b00417b5ba4433d
+  - enabled: 1
+    path: Assets/1. Scenes/Clock.unity
+    guid: 9b7d27f2a5a4d7e468676d2eed73d246
+  - enabled: 1
+    path: Assets/1. Scenes/Picture.unity
+    guid: 7834d63e0e7e24d4ca54d3897b9f751c
   m_configObjects: {}

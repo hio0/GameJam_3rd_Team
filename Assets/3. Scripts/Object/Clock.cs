@@ -8,7 +8,6 @@ public class Clock : MonoBehaviour
     public RectTransform hArrow;
     public RectTransform mArrow;
     public RectTransform sArrow;
-    public RectTransform chu;
 
     public float sSpeed;
     public float mMoveLengh;
@@ -21,8 +20,9 @@ public class Clock : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        FadeObject.fade.FadeIn(1.5f);
+
         mMoveCount = UnityEngine.Random.Range(0, 61 * mMoveLengh);
-        Debug.Log(mMoveCount);
         isfinish = false;
 
         Action mmtr = () => MMove(true, 1);

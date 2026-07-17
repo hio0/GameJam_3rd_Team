@@ -121,7 +121,6 @@ public class Clock : MonoBehaviour
         if(Mathf.Abs(Mathf.DeltaAngle(mArrow.eulerAngles.z, 100f)) < 5f)
         {
             mComplete = true;
-            FixManager.fix.ClearEvent();
             SoundManager.soundManager.clockTickSFX.Stop();
         }
         else

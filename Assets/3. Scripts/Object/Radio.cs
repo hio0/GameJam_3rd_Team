@@ -26,15 +26,20 @@ public class Radio : MonoBehaviour
 
     private void OnEnable()
     {
+        
+    }
+
+    private void OnDisable() => UnSubscribe();
+
+    private void Start()
+    {
+        Apply();
+
         FixManager.fix.p1_AMove += PitchDown;
         FixManager.fix.p1_DMove += PitchUp;
         FixManager.fix.p2_LeftMove += DistortionDown;
         FixManager.fix.p2_RightMove += DistortionUp;
     }
-
-    private void OnDisable() => UnSubscribe();
-
-    private void Start() => Apply();
     private void Awake()
     {
 

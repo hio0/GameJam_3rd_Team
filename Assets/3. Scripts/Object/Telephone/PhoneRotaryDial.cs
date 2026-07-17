@@ -33,10 +33,7 @@ public class PhoneDial : MonoBehaviour
 
     private void OnEnable()
     {
-        FixManager.fix.p1_AMove += WheelLeft;
-        FixManager.fix.p1_DMove += WheelRight;
-        FixManager.fix.p2_LeftMove += PlateLeft;
-        FixManager.fix.p2_RightMove += PlateRight;
+        
     }
 
     private void OnDisable() => UnSubscribe();
@@ -46,6 +43,11 @@ public class PhoneDial : MonoBehaviour
     {
         plateImages = plate.GetComponentsInChildren<Image>();
         wheelImages = wheel.GetComponentsInChildren<Image>();
+
+        FixManager.fix.p1_AMove += WheelLeft;
+        FixManager.fix.p1_DMove += WheelRight;
+        FixManager.fix.p2_LeftMove += PlateLeft;
+        FixManager.fix.p2_RightMove += PlateRight;
     }
 
     private void WheelLeft()  => wheelAngle -= rotateRate * Time.deltaTime;

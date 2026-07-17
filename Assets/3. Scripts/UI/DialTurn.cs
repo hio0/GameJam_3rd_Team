@@ -28,28 +28,14 @@ public class DialTurn : MonoBehaviour
     }
 
     // Start is called before the first frame update
-    void Start()
-    {
+    void LeftRotatePitchDial()=> pitch_Dial.transform.Rotate(0,0, -(radioScript.pitchRate*400)*Time.deltaTime);
         
-    }
-    void LeftRotatePitchDial()
-    {
-        pitch_Dial.transform.Rotate(0,0, -(radioScript.pitchRate*400)*Time.deltaTime);
-        
-    }
-    void LeftRotateDistorationDial()
-    {
-        distoration_Dial.transform.Rotate(0,0, -(radioScript.distortionRate*400)*Time.deltaTime);
-    }
-    void RightRotatePitchDial()
-    {
-        Debug.Log("working dude");
-        pitch_Dial.transform.Rotate(0,0, (radioScript.pitchRate*400)*Time.deltaTime);
-        
-    }
-    void RightRotateDistoration_Dial()
-    {
-        distoration_Dial.transform.Rotate(0,0, (radioScript.distortionRate*400)*Time.deltaTime);
-    }
+    
+    void LeftRotateDistorationDial() => distoration_Dial.transform.Rotate(0,0, -(radioScript.distortionRate*400)*Time.deltaTime);
+    
+    void RightRotatePitchDial() => pitch_Dial.transform.Rotate(0,0, (radioScript.pitchRate*400)*Time.deltaTime);
+    
+    
+    void RightRotateDistoration_Dial() => distoration_Dial.transform.Rotate(0,0, (radioScript.distortionRate*400)*Time.deltaTime);
     // Update is called once per frame
 }

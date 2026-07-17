@@ -11,7 +11,7 @@ public class Radio : MonoBehaviour
     [SerializeField] public float pitchRate = 0.4f;
     [SerializeField] public float distortionRate = 0.5f;
     [SerializeField] private float pitchErrorRange = 0.5f;
-    [SerializeField] private float winThreshold = 0.85f;
+    [SerializeField] private float winThreshold = 0.95f;
 
     private float currentPitch = 1.7f;
     private float currentDistortion = 0.9f;
@@ -75,6 +75,7 @@ public class Radio : MonoBehaviour
 
         isTuned = true;
         onTuned?.Invoke();
+        FixManager.fix.FixCompleted();
         Debug.Log("튜닝 성공!");
     }
 }

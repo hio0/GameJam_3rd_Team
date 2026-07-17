@@ -75,9 +75,10 @@ public class PhoneDial : MonoBehaviour
         if (holdTimer < holdDuration) return;
 
         isFixed = true;
-        
+
         onFixed?.Invoke();
-        Debug.Log("다이얼 수리 완료!");
+        FixManager.fix.FixCompleted();
+        Debug.Log("플레이어가 전화기를 수리 하였습니다... ");
     }
 
     private void SetColor(Image[] images, Color c)

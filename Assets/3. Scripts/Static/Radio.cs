@@ -1,0 +1,79 @@
+using System;
+using UnityEngine;
+
+public class RadioTuner : MonoBehaviour
+{
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioDistortionFilter distortionFilter;
+    [SerializeField] private TuningBar tuningBar;
+
+    [SerializeField] private float pitchRate = 0.4f;
+    [SerializeField] private float distortionRate = 0.5f;
+    [SerializeField] private float pitchErrorRange = 0.5f;
+    [SerializeField] private float winThreshold = 0.85f;
+
+    private float currentPitch = 1.7f;
+    private float currentDistortion = 0.9f;
+    private bool isTuned;
+
+    public event Action onTuned;
+    public bool IsTuned => isTuned;
+
+    public float PitchAccuracy => 1f - Mathf.Clamp01(Mathf.Abs(currentPitch - 1f) / pitchErrorRange);
+    public float DistortionAccuracy => 1f - currentDistortion;
+
+    private void OnEnable()
+    {
+        PlayerManager.player.p1_AMove += PitchDown;
+        PlayerManager.player.p1_DMove += PitchUp;
+        PlayerManager.player.p2_LeftMove += DistortionDown;
+        PlayerManager.player.p2_RightMove += DistortionUp;
+    }
+
+    private void OnDisable()
+    {
+        if (PlayerManager.player == null) return;
+
+        PlayerManager.player.p1_AMove -= PitchDown;
+        PlayerManager.player.p1_DMove -= PitchUp;
+        PlayerManager.player.p2_LeftMove -= DistortionDown;
+        PlayerManager.player.p2_RightMove -= DistortionUp;
+    }
+
+    private void Start() => Apply();
+
+    private void PitchUp()   => SetPitch(currentPitch + pitchRate * Time.deltaTime);
+    private void PitchDown() => SetPitch(currentPitch - pitchRate * Time.deltaTime);
+    private void DistortionUp()   => SetDistortion(currentDistortion + distortionRate * Time.deltaTime);
+    private void DistortionDown() => SetDistortion(currentDistortion - distortionRate * Time.deltaTime);
+
+    private void SetPitch(float value)
+    {
+        currentPitch = Mathf.Clamp(value, 0.5f, 2f);
+        Apply();
+    }
+
+    private void SetDistortion(float value)
+    {
+        currentDistortion = Mathf.Clamp01(value);
+        Apply();
+    }
+
+    private void Apply()
+    {
+        audioSource.pitch = currentPitch;
+        distortionFilter.distortionLevel = currentDistortion;
+        tuningBar.SetFill(Mathf.Min(PitchAccuracy, DistortionAccuracy));
+        CheckWin();
+    }
+
+    private void CheckWin()
+    {
+        if (isTuned) return;
+        if (PitchAccuracy < winThreshold || DistortionAccuracy < winThreshold) return;
+
+        isTuned = true;
+        onTuned?.Invoke();
+        Debug.Log("튜닝 성공!");
+    }
+}

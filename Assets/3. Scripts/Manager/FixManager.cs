@@ -15,7 +15,6 @@ public class FixManager : MonoBehaviour
     private void Awake()
     {
         fix = this;
-        ClearEvent();
     }
 
     // Start is called before the first frame update
@@ -46,7 +45,7 @@ public class FixManager : MonoBehaviour
         }
     }
 
-    void ClearEvent()
+    public void ClearEvent()
     {
         p1_AMove = null;
         p1_DMove = null;

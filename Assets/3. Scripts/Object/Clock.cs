@@ -13,6 +13,7 @@ public class Clock : MonoBehaviour
     public float sSpeed;
     public float mMoveLengh;
     public float hMoveLengh;
+    
 
     float mMoveCount;
     bool isfinish;
@@ -27,7 +28,9 @@ public class Clock : MonoBehaviour
     void Start()
     {
         FadeObject.fade.FadeIn(1.5f);
-
+        SoundManager.soundManager.clockTickSFX.Play();
+        SoundManager.soundManager.clockTickSFX.loop = true;
+        SoundManager.soundManager.StartCoroutine(SoundManager.soundManager.FadeInVol(SoundManager.soundManager.clockTickSFX));
         mMoveCount = UnityEngine.Random.Range(0, 61 * mMoveLengh);
         isfinish = false;
 
@@ -118,6 +121,8 @@ public class Clock : MonoBehaviour
         if(Mathf.Abs(Mathf.DeltaAngle(mArrow.eulerAngles.z, 100f)) < 5f)
         {
             mComplete = true;
+            FixManager.fix.ClearEvent();
+            SoundManager.soundManager.clockTickSFX.Stop();
         }
         else
         {

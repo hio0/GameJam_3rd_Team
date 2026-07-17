@@ -77,6 +77,7 @@ public class PhoneDial : MonoBehaviour
         isFixed = true;
 
         onFixed?.Invoke();
+        FixManager.fix.ClearEvent();
         FixManager.fix.FixCompleted();
         Debug.Log("플레이어가 전화기를 수리 하였습니다... ");
     }

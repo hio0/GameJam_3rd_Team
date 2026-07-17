@@ -24,20 +24,20 @@ public class RadioTuner : MonoBehaviour
 
     private void OnEnable()
     {
-        PlayerManager.player.p1_AMove += PitchDown;
-        PlayerManager.player.p1_DMove += PitchUp;
-        PlayerManager.player.p2_LeftMove += DistortionDown;
-        PlayerManager.player.p2_RightMove += DistortionUp;
+        FixManager.fix.p1_AMove += PitchDown;
+        FixManager.fix.p1_DMove += PitchUp;
+        FixManager.fix.p2_LeftMove += DistortionDown;
+        FixManager.fix.p2_RightMove += DistortionUp;
     }
 
     private void OnDisable()
     {
-        if (PlayerManager.player == null) return;
+        if (FixManager.fix == null) return;
 
-        PlayerManager.player.p1_AMove -= PitchDown;
-        PlayerManager.player.p1_DMove -= PitchUp;
-        PlayerManager.player.p2_LeftMove -= DistortionDown;
-        PlayerManager.player.p2_RightMove -= DistortionUp;
+        FixManager.fix.p1_AMove -= PitchDown;
+        FixManager.fix.p1_DMove -= PitchUp;
+        FixManager.fix.p2_LeftMove -= DistortionDown;
+        FixManager.fix.p2_RightMove -= DistortionUp;
     }
 
     private void Start() => Apply();
@@ -75,5 +75,6 @@ public class RadioTuner : MonoBehaviour
         isTuned = true;
         onTuned?.Invoke();
         Debug.Log("튜닝 성공!");
+        
     }
 }

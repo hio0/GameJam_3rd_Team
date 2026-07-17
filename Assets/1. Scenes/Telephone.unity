@@ -183,7 +183,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fillImage: {fileID: 300815569}
-  smoothSpeed: 3.5
+  smoothSpeed: 5
 --- !u!114 &300815569
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -498,9 +498,12 @@ MonoBehaviour:
   wheel: {fileID: 776708642}
   holdBar: {fileID: 300815568}
   rotateRate: 90
-  tolerance: 5
+  tolerance: 12
   holdDuration: 1
-  plateNormal: {r: 0.94, g: 0.45, b: 0.4, a: 1}
+  wheelDrift: 25
+  plateDrift: -18
+  drainRate: 2
+  plateNormal: {r: 0.45098042, g: 0.43921572, b: 0.43921572, a: 1}
   wheelNormal: {r: 0, g: 0, b: 0, a: 1}
   okColor: {r: 0.11, g: 0.62, b: 0.46, a: 1}
 --- !u!4 &875829561
@@ -684,11 +687,11 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 2003501714}
+  - {fileID: 242581305}
   - {fileID: 2136025051}
   - {fileID: 930304789}
   - {fileID: 1587538341}
-  - {fileID: 242581305}
-  - {fileID: 2003501714}
   - {fileID: 1036558956}
   - {fileID: 776708642}
   - {fileID: 300815567}
@@ -1148,13 +1151,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: NumberButtons
       objectReference: {fileID: 0}
+    - target: {fileID: 6092868440230660054, guid: e9ad927bd2c6c094abf4437021740b40, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -90
+      objectReference: {fileID: 0}
     - target: {fileID: 8103062608893278445, guid: e9ad927bd2c6c094abf4437021740b40, type: 3}
       propertyPath: m_fontColor.a
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8103062608893278445, guid: e9ad927bd2c6c094abf4437021740b40, type: 3}
       propertyPath: m_fontColor32.rgba
-      value: 0
+      value: 4278190080
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

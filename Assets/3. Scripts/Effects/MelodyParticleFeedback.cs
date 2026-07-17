@@ -14,6 +14,7 @@ public class MelodyParticleFeedback : MonoBehaviour
         if (radio.IsTuned) 
         {
             Melody.Stop();
+            
             enabled = false;
             return;
         }

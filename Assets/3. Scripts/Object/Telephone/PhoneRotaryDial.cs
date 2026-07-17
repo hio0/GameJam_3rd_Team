@@ -5,18 +5,22 @@ using UnityEngine.UI;
 public class PhoneDial : MonoBehaviour
 {
     [SerializeField] private RectTransform plate;   // NumberPlate — P2
-    [SerializeField] private RectTransform wheel;   // HolePlate — P1
+    [SerializeField] private RectTransform wheel;   // HoleWheel — P1
     [SerializeField] private TuningBar holdBar;
 
-    [SerializeField] private float rotateRate = 90f;    
-    [SerializeField] private float tolerance = 10f;
-    [SerializeField] private float holdDuration = 1f;
+    [SerializeField] private float rotateRate = 90f;
+    [SerializeField] private float tolerance = 12f;
+    [SerializeField] private float holdDuration = 3f;
+
+    [SerializeField] private float wheelDrift = 25f;
+    [SerializeField] private float plateDrift = -18f;
+    [SerializeField] private float drainRate = 2f;
 
     [SerializeField] private Color plateNormal = new Color(0.94f, 0.45f, 0.40f);
     [SerializeField] private Color wheelNormal = Color.black;
     [SerializeField] private Color okColor = new Color(0.11f, 0.62f, 0.46f);
 
-    private float wheelAngle = 42f;    
+    private float wheelAngle = 42f;
     private float plateAngle = -27f;
     private float holdTimer;
     private bool isFixed;
@@ -25,6 +29,7 @@ public class PhoneDial : MonoBehaviour
     private Image[] wheelImages;
 
     public event Action onFixed;
+    public bool IsFixed => isFixed;
 
     private void OnEnable()
     {
@@ -34,15 +39,7 @@ public class PhoneDial : MonoBehaviour
         FixManager.fix.p2_RightMove += PlateRight;
     }
 
-    private void OnDisable()
-    {
-        if (FixManager.fix == null) return;
-
-        FixManager.fix.p1_AMove -= WheelLeft;
-        FixManager.fix.p1_DMove -= WheelRight;
-        FixManager.fix.p2_LeftMove -= PlateLeft;
-        FixManager.fix.p2_RightMove -= PlateRight;
-    }
+    private void OnDisable() => UnSubscribe();
 
     // DialBuilder가 Awake에서 만든 복제본을 Start에서 수집
     private void Start()
@@ -58,6 +55,12 @@ public class PhoneDial : MonoBehaviour
 
     private void Update()
     {
+        if (!isFixed)
+        {
+            wheelAngle += wheelDrift * Time.deltaTime;
+            plateAngle += plateDrift * Time.deltaTime;
+        }
+
         wheel.localRotation = Quaternion.Euler(0f, 0f, -wheelAngle);
         plate.localRotation = Quaternion.Euler(0f, 0f, -plateAngle);
 
@@ -69,16 +72,21 @@ public class PhoneDial : MonoBehaviour
 
         if (isFixed) return;
 
-        holdTimer = (meshed && homed) ? holdTimer + Time.deltaTime : 0f;
+        holdTimer = (meshed && homed)
+            ? holdTimer + Time.deltaTime
+            : Mathf.Max(0f, holdTimer - Time.deltaTime * drainRate);
+
         holdBar.SetFill(holdTimer / holdDuration);
 
         if (holdTimer < holdDuration) return;
 
         isFixed = true;
-
+        UnSubscribe();
         onFixed?.Invoke();
-        FixManager.fix.ClearEvent();
-        FixManager.fix.FixCompleted();
+
+        if (FixManager.fix != null)
+            FixManager.fix.FixCompleted();
+
         Debug.Log("플레이어가 전화기를 수리 하였습니다... ");
     }
 
@@ -86,5 +94,15 @@ public class PhoneDial : MonoBehaviour
     {
         for (int i = 0; i < images.Length; i++)
             images[i].color = c;
+    }
+
+    private void UnSubscribe()
+    {
+        if (FixManager.fix == null) return;
+
+        FixManager.fix.p1_AMove -= WheelLeft;
+        FixManager.fix.p1_DMove -= WheelRight;
+        FixManager.fix.p2_LeftMove -= PlateLeft;
+        FixManager.fix.p2_RightMove -= PlateRight;
     }
 }

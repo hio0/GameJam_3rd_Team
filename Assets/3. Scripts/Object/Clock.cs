@@ -12,7 +12,6 @@ public class Clock : MonoBehaviour
     public float sSpeed;
     public float mMoveLengh;
     public float hMoveLengh;
-    public float chuSpeed;
 
     float mMoveCount;
     bool isfinish;

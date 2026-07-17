@@ -1,72 +1,137 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Picture : MonoBehaviour
 {
-    [SerializeField] private SpriteRenderer spriteRenderer;
-    [SerializeField] private int brushSize = 20;
+    [Header("Image")]
+    [SerializeField] private Image image;
+
+    [Header("Brushes")]
+    [SerializeField] private RectTransform brush1;
+    [SerializeField] private RectTransform brush2;
+
+    [SerializeField] private float moveSpeed = 300f;
+    [SerializeField] private int brushRadius = 20;
 
     private Texture2D texture;
+    private RectTransform imageRect;
+
+    private int erasedPixelCount;
+    private int totalPixelCount;
 
     void Start()
     {
-        Texture2D original = spriteRenderer.sprite.texture;
+        FadeObject.fade.FadeIn(1.5f);
+        imageRect = image.rectTransform;
 
-        texture = Instantiate(original);
+        texture = Instantiate(image.sprite.texture);
 
-        spriteRenderer.sprite = Sprite.Create(
+        image.sprite = Sprite.Create(
             texture,
-            new Rect(0, 0, texture.width, texture.height),
+            image.sprite.rect,
             new Vector2(0.5f, 0.5f),
-            spriteRenderer.sprite.pixelsPerUnit);
+            image.sprite.pixelsPerUnit);
+
+        Color[] pixels = texture.GetPixels();
+
+        totalPixelCount = 0;
+
+        foreach (Color c in pixels)
+        {
+            if (c.a > 0.01f)
+                totalPixelCount++;
+        }
     }
 
     void Update()
     {
-        if (Input.GetMouseButton(0))
-        {
-            Erase();
-        }
+        MoveBrushes();
+
+        Erase(brush1);
+        Erase(brush2);
+
+        texture.Apply();
     }
 
-    void Erase()
+    void MoveBrushes()
     {
-        Vector3 world = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        world.z = 0;
+        Vector2 move1 = Vector2.zero;
 
-        RaycastHit2D hit = Physics2D.Raycast(world, Vector2.zero);
+        if (Input.GetKey(KeyCode.W)) move1.y += 1;
+        if (Input.GetKey(KeyCode.S)) move1.y -= 1;
+        if (Input.GetKey(KeyCode.A)) move1.x -= 1;
+        if (Input.GetKey(KeyCode.D)) move1.x += 1;
 
-        if (hit.collider == null) return;
-        if (hit.collider.gameObject != gameObject) return;
+        brush1.anchoredPosition += move1.normalized * moveSpeed * Time.deltaTime;
+        ClampBrush(brush1);
 
-        Vector2 local = transform.InverseTransformPoint(world);
+        Vector2 move2 = Vector2.zero;
 
-        Sprite sprite = spriteRenderer.sprite;
+        if (Input.GetKey(KeyCode.UpArrow)) move2.y += 1;
+        if (Input.GetKey(KeyCode.DownArrow)) move2.y -= 1;
+        if (Input.GetKey(KeyCode.LeftArrow)) move2.x -= 1;
+        if (Input.GetKey(KeyCode.RightArrow)) move2.x += 1;
 
-        float px = local.x * sprite.pixelsPerUnit + sprite.rect.width / 2;
-        float py = local.y * sprite.pixelsPerUnit + sprite.rect.height / 2;
+        brush2.anchoredPosition += move2.normalized * moveSpeed * Time.deltaTime;
+        ClampBrush(brush2);
+    }
 
-        for (int x = -brushSize; x <= brushSize; x++)
+    void ClampBrush(RectTransform brush)
+    {
+        float halfWidth = brush.rect.width * 0.5f;
+        float halfHeight = brush.rect.height * 0.5f;
+
+        Vector2 pos = brush.anchoredPosition;
+
+        pos.x = Mathf.Clamp(pos.x, -960 + halfWidth, 960 - halfWidth);
+        pos.y = Mathf.Clamp(pos.y, -540 + halfHeight, 540 - halfHeight);
+
+        brush.anchoredPosition = pos;
+    }
+
+    void Erase(RectTransform brush)
+    {
+        Vector2 localPos = brush.anchoredPosition;
+
+        Rect rect = imageRect.rect;
+
+        float u = Mathf.InverseLerp(rect.xMin, rect.xMax, localPos.x);
+        float v = Mathf.InverseLerp(rect.yMin, rect.yMax, localPos.y);
+
+        int px = Mathf.RoundToInt(u * texture.width);
+        int py = Mathf.RoundToInt(v * texture.height);
+
+        for (int x = -brushRadius; x <= brushRadius; x++)
         {
-            for (int y = -brushSize; y <= brushSize; y++)
+            for (int y = -brushRadius; y <= brushRadius; y++)
             {
-                if (x * x + y * y > brushSize * brushSize)
+                if (x * x + y * y > brushRadius * brushRadius)
                     continue;
 
-                int tx = Mathf.RoundToInt(px + x);
-                int ty = Mathf.RoundToInt(py + y);
+                int tx = px + x;
+                int ty = py + y;
 
                 if (tx < 0 || tx >= texture.width ||
                     ty < 0 || ty >= texture.height)
                     continue;
 
                 Color c = texture.GetPixel(tx, ty);
-                c.a = 0;
+                if(c.a != 0)
+                {
+                    c.a = 0;
+                    erasedPixelCount++;
+                }
                 texture.SetPixel(tx, ty, c);
             }
         }
 
-        texture.Apply();
+        float percent = (float)erasedPixelCount / totalPixelCount;
+
+        if (percent >= 0.93f)
+        {
+            FixManager.fix.FixCompleted();
+        }
     }
 }

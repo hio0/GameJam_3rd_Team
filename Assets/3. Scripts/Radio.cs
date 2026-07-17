@@ -1,44 +1,61 @@
+using System;
 using UnityEngine;
 
 public class RadioTuner : MonoBehaviour
 {
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioDistortionFilter distortionFilter;
+    [SerializeField] private TuningBar tuningBar;
 
-    [SerializeField] private float pitchStep = 0.1f;
-    [SerializeField] private float distortionStep = 0.1f;
-    [SerializeField] private float tolerance = 0.05f;
-    bool isRadioScene;
-    private float currentPitch = 1.5f;    
-    private float currentDistortion = 0.5f;
-    void OnEnable()
+    [SerializeField] private float pitchRate = 0.4f;
+    [SerializeField] private float distortionRate = 0.5f;
+    [SerializeField] private float pitchErrorRange = 0.5f;
+    [SerializeField] private float winThreshold = 0.85f;
+
+    private float currentPitch = 1.7f;
+    private float currentDistortion = 0.9f;
+    private bool isTuned;
+
+    public event Action onTuned;
+    public bool IsTuned => isTuned;
+
+    public float PitchAccuracy => 1f - Mathf.Clamp01(Mathf.Abs(currentPitch - 1f) / pitchErrorRange);
+    public float DistortionAccuracy => 1f - currentDistortion;
+
+    private void OnEnable()
     {
-        PlayerManager.player.p1_AMove += OnP1Pressed;
+        PlayerManager.player.p1_AMove += PitchDown;
+        PlayerManager.player.p1_DMove += PitchUp;
+        PlayerManager.player.p2_LeftMove += DistortionDown;
+        PlayerManager.player.p2_RightMove += DistortionUp;
     }
-    void OnDisable()
+
+    private void OnDisable()
     {
-        PlayerManager.player.p1_AMove -= OnP1Pressed;
+        if (PlayerManager.player == null) return;
+
+        PlayerManager.player.p1_AMove -= PitchDown;
+        PlayerManager.player.p1_DMove -= PitchUp;
+        PlayerManager.player.p2_LeftMove -= DistortionDown;
+        PlayerManager.player.p2_RightMove -= DistortionUp;
     }
-    void Start()
+
+    private void Start() => Apply();
+
+    private void PitchUp()   => SetPitch(currentPitch + pitchRate * Time.deltaTime);
+    private void PitchDown() => SetPitch(currentPitch - pitchRate * Time.deltaTime);
+    private void DistortionUp()   => SetDistortion(currentDistortion + distortionRate * Time.deltaTime);
+    private void DistortionDown() => SetDistortion(currentDistortion - distortionRate * Time.deltaTime);
+
+    private void SetPitch(float value)
     {
+        currentPitch = Mathf.Clamp(value, 0.5f, 2f);
         Apply();
     }
 
-    public void OnP1Pressed()
+    private void SetDistortion(float value)
     {
-        currentPitch += pitchStep;
-        if (currentPitch > 2f) currentPitch = 0.5f;
-        Debug.Log($"{currentPitch}");
-        
-        Apply();
-    }
-
-
-    public void OnP2Pressed()
-    {
-        currentDistortion += distortionStep;
-        if (currentDistortion > 1f) currentDistortion = 0f;
-        Debug.Log($"{currentDistortion}");
+        currentDistortion = Mathf.Clamp01(value);
         Apply();
     }
 
@@ -46,25 +63,17 @@ public class RadioTuner : MonoBehaviour
     {
         audioSource.pitch = currentPitch;
         distortionFilter.distortionLevel = currentDistortion;
+        tuningBar.SetFill(Mathf.Min(PitchAccuracy, DistortionAccuracy));
         CheckWin();
     }
 
     private void CheckWin()
     {
-        bool pitchOk = Mathf.Abs(currentPitch - 1f) < tolerance;
-        bool distortionOk = currentDistortion < tolerance;
+        if (isTuned) return;
+        if (PitchAccuracy < winThreshold || DistortionAccuracy < winThreshold) return;
 
-        if (pitchOk && distortionOk)
-        {
-            Debug.Log("튜닝 성공!");
-        }
+        isTuned = true;
+        onTuned?.Invoke();
+        Debug.Log("튜닝 성공!");
     }
-
-    void Update()
-    {
-        if (isRadioScene)
-        {
-            
-        }
-    } 
 }

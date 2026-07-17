@@ -2,66 +2,47 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RippingLetter : MonoBehaviour
 {
-    public Ending ending;
     CanvasGroup can;
-    List<RippingLetter> others;
-    public CircleCollider2D realCol;
+    RectTransform rec;
+    GameObject col;
 
-    public void Initialize(Ending ending)
-    {
-        this.ending = ending;
-    }
+    [SerializeField] Vector2 target;
+    bool notyetposied;
 
-    private void OnEnable()
+    // Start is called before the first frame update
+    void Start()
     {
         can = GetComponent<CanvasGroup>();
+        can.alpha = 0;
+        rec = GetComponent<RectTransform>();
+        col = transform.GetChild(0).gameObject;
+
+        notyetposied = true;
 
         float r = Random.Range(0.5f, 2f);
         DOTween.DOFade(can, 1, r);
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
     // Update is called once per frame
     void Update()
     {
-        
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        other.gameObject.TryGetComponent<RippingLetter>(out RippingLetter letter);
-
-        if(letter != null)
+        if (Vector2.Distance(rec.anchoredPosition, target) <= 10f && notyetposied)
         {
-            others.Add(letter);
-        }
-
-        if (others.Count >= 5)
-        {
-            ending.completeLetters.Add(this);
+            TargetLock();
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    public void TargetLock()
     {
-        other.gameObject.TryGetComponent<RippingLetter>(out RippingLetter letter);
+        rec.anchoredPosition = target;
+        col.SetActive(false);
+        GetComponent<Image>().color = new Color(255f, 255f, 255f);
 
-        if (letter != null)
-        {
-            others.Remove(letter);
-        }
-
-        if (others.Count >= 5)
-        {
-            ending.completeLetters.Remove(this);
-        }
+        Ending.ending.completeLetters.Add(this);
+        notyetposied = false;
     }
 }

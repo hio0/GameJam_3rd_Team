@@ -122,6 +122,7 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+<<<<<<< Updated upstream
 --- !u!1 &401737562
 GameObject:
   m_ObjectHideFlags: 0
@@ -250,6 +251,8 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+=======
+>>>>>>> Stashed changes
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -593,6 +596,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+<<<<<<< Updated upstream
 --- !u!1 &755756070
 GameObject:
   m_ObjectHideFlags: 0
@@ -686,6 +690,8 @@ MonoBehaviour:
   player2: {fileID: 0}
   completeLetters: []
   letter: {fileID: 0}
+=======
+>>>>>>> Stashed changes
 --- !u!1 &886048509
 GameObject:
   m_ObjectHideFlags: 0
@@ -1174,7 +1180,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1711896375}
-  - {fileID: 755756071}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}

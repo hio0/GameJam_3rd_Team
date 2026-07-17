@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/1. Scenes/Picture.unity
     guid: 7834d63e0e7e24d4ca54d3897b9f751c
+  - enabled: 1
+    path: Assets/1. Scenes/Telephone.unity
+    guid: c03d4bb2e8d526f48ace31bf5e88a038
   m_configObjects: {}

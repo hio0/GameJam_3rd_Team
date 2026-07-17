@@ -48,15 +48,24 @@ public class FixCompleteObject : MonoBehaviour
 
     public void Exit()
     {
-        StartCoroutine(ExitAnimation());
+        if (GamePlayInfo.lettercount == 5)
+        {
+            StartCoroutine(ExitAnimation("Ending"));
+        }
+        else
+        {
+            GamePlayInfo.lettercount++;
+            StartCoroutine(ExitAnimation("Loading"));
+        }
     }
 
-    IEnumerator ExitAnimation()
+    IEnumerator ExitAnimation(string sceneName)
     {
         float speed = 0.5f;
         FadeObject.fade.FadeOut(speed);
+
         yield return new WaitForSeconds(speed + 1.5f);
 
-        SceneMove.LoadScene("Loading");
+        SceneMove.LoadScene(sceneName);
     }
 }

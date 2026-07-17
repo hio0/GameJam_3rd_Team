@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Clock : MonoBehaviour
 {
@@ -15,6 +16,12 @@ public class Clock : MonoBehaviour
 
     float mMoveCount;
     bool isfinish;
+
+    public bool mComplete;
+    public bool hComplete;
+
+    float comcount;
+    public Image comfill;
 
     // Start is called before the first frame update
     void Start()
@@ -36,13 +43,32 @@ public class Clock : MonoBehaviour
         Action hmfl = () => HMove(false, 1);
         FixManager.fix.p2_LeftMove += hmfl;
 
+        comcount = 2f;
+        comfill.transform.parent.gameObject.SetActive(false);
+
         StartCoroutine(SMove());
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if(mComplete && hComplete && !isfinish)
+        {
+            comcount -= Time.deltaTime;
+            comfill.transform.parent.gameObject.SetActive(true);
+            comfill.fillAmount = comcount / 2f;
+
+            if (comcount < 0)
+            {
+                comcount = 0;
+                FixManager.fix.FixCompleted();
+            }
+        }
+        else
+        {
+            comcount = 2f;
+            comfill.transform.parent.gameObject.SetActive(false);
+        }
     }
 
     IEnumerator SMove()
@@ -78,15 +104,24 @@ public class Clock : MonoBehaviour
         if(isback)
         {
             movelengh = -movelengh;
+            mMoveCount += 1 * gajunchi;
         }
 
         mArrow.Rotate(Vector3.forward, movelengh);
-        mMoveCount++;
 
         if(mMoveCount >= 60 * mMoveLengh)
         {
             HMove(false, -120);
             mMoveCount = 0;
+        }
+
+        if(Mathf.Abs(Mathf.DeltaAngle(mArrow.eulerAngles.z, 100f)) < 5f)
+        {
+            mComplete = true;
+        }
+        else
+        {
+            mComplete = false;
         }
     }
 
@@ -99,5 +134,14 @@ public class Clock : MonoBehaviour
         }
 
         hArrow.Rotate(Vector3.forward, movelengh);
+
+        if (Mathf.Abs(Mathf.DeltaAngle(hArrow.eulerAngles.z, 140f)) < 5f)
+        {
+           hComplete = true;
+        }
+        else
+        {
+            hComplete = false;
+        }
     }
 }

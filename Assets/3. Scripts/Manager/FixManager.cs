@@ -12,6 +12,8 @@ public class FixManager : MonoBehaviour
     public event Action p2_LeftMove;
     public event Action p2_RightMove;
 
+    public CanvasGroup pre_completeP;
+
     private void Awake()
     {
         fix = this;
@@ -52,5 +54,10 @@ public class FixManager : MonoBehaviour
         p1_DMove = null;
         p2_LeftMove = null;
         p2_RightMove = null;
+    }
+
+    public void FixCompleted()
+    {
+        DOTween.DOFade(pre_completeP, 1, 0.3f);
     }
 }

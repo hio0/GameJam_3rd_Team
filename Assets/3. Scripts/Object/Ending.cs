@@ -27,6 +27,7 @@ public class Ending : MonoBehaviour
     public GameObject letter;
     public CanvasGroup creditB;
     public RectTransform credit;
+    public RectTransform photo;
 
     private void Awake()
     {
@@ -157,6 +158,15 @@ public class Ending : MonoBehaviour
                 break;
             }
 
+            yield return null;
+        }
+
+        Vector2 target = new Vector2(0, -359.82f);
+        while ((photo.anchoredPosition - target).sqrMagnitude > 0.001)
+        {
+            float y = Mathf.Lerp(photo.anchoredPosition.y, target.y, Time.deltaTime * 3f);
+
+            photo.anchoredPosition = new Vector2(photo.anchoredPosition.x, y);
             yield return null;
         }
 

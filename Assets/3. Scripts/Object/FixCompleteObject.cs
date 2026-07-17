@@ -27,7 +27,10 @@ public class FixCompleteObject : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(Input.GetKeyDown(KeyCode.F))
+        {
+            GamePlayInfo.lettercount = 5;
+        }
     }
 
     public void Completed()

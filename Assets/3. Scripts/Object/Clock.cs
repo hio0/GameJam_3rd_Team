@@ -5,13 +5,15 @@ using UnityEngine;
 
 public class Clock : MonoBehaviour
 {
-    public Transform hArrow;
-    public Transform mArrow;
-    public Transform sArrow;
+    public RectTransform hArrow;
+    public RectTransform mArrow;
+    public RectTransform sArrow;
+    public RectTransform chu;
 
     public float sSpeed;
     public float mMoveLengh;
     public float hMoveLengh;
+    public float chuSpeed;
 
     float mMoveCount;
     bool isfinish;
@@ -19,14 +21,21 @@ public class Clock : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        mMoveCount = UnityEngine.Random.Range(0, 61);
+        mMoveCount = UnityEngine.Random.Range(0, 61 * mMoveLengh);
+        Debug.Log(mMoveCount);
         isfinish = false;
 
-        Action mmtr = () => MMove(true);
+        Action mmtr = () => MMove(true, 1);
         FixManager.fix.p1_DMove += mmtr;
 
-        Action mmfl = () => MMove(false);
-        FixManager.fix.p1_DMove += mmtr;
+        Action mmfl = () => MMove(false, 1);
+        FixManager.fix.p1_AMove += mmfl;
+
+        Action hmtr = () => HMove(true, 1);
+        FixManager.fix.p2_RightMove += hmtr;
+
+        Action hmfl = () => HMove(false, 1);
+        FixManager.fix.p2_LeftMove += hmfl;
 
         StartCoroutine(SMove());
     }
@@ -39,50 +48,57 @@ public class Clock : MonoBehaviour
 
     IEnumerator SMove()
     {
-        bool isact = false;
+        float prevAngle = 0;
+        bool iscat = false;
 
         while(!isfinish)
         {
-            sArrow.Rotate(new Vector3(0, 0, -sSpeed * Time.deltaTime));
-            if (sArrow.rotation.z < 0)
+            sArrow.Rotate(Vector3.forward, -sSpeed * Time.deltaTime);
+
+            float angle = sArrow.eulerAngles.z;
+
+            if (prevAngle > 1f && angle < 1f && !iscat)
             {
-                isact = false;
+                MMove(false, -50);
+                iscat = true;
             }
-            else if (Mathf.Round(sArrow.rotation.z) == 0 && !isact)
+            else
             {
-                MMove(false);
-                isact = true;
+                iscat = false;
             }
+
+            prevAngle = angle;
 
             yield return null;
         }
     }
 
-    void MMove(bool isback)
+    void MMove(bool isback, float gajunchi)
     {
-        float movelengh = mMoveLengh;
+        float movelengh = mMoveLengh * gajunchi * Time.deltaTime;
         if(isback)
         {
-            movelengh = -mMoveLengh;
+            movelengh = -movelengh;
         }
 
-        mArrow.Rotate(new Vector3(0, 0, -mMoveLengh * Time.deltaTime));
+        mArrow.Rotate(Vector3.forward, movelengh);
         mMoveCount++;
 
-        if(mMoveCount >= 60)
+        if(mMoveCount >= 60 * mMoveLengh)
         {
-            HMove(false);
+            HMove(false, -120);
+            mMoveCount = 0;
         }
     }
 
-    void HMove(bool isback)
+    void HMove(bool isback, float gajunchi)
     {
-        float movelengh = hMoveLengh;
+        float movelengh = hMoveLengh * gajunchi * Time.deltaTime;
         if (isback)
         {
-            movelengh = -hMoveLengh;
+            movelengh = -movelengh;
         }
 
-        mArrow.Rotate(new Vector3(0, 0, -hMoveLengh * Time.deltaTime));
+        hArrow.Rotate(Vector3.forward, movelengh);
     }
 }

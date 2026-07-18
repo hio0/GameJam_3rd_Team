@@ -28,6 +28,7 @@ public class Radio : MonoBehaviour
 
     private void Start()
     {
+        FadeObject.fade.FadeIn(1.5f);
         Apply();
         SoundManager.soundManager.StartCoroutine(SoundManager.soundManager.FadeInVol(RadioAudio));
         FixManager.fix.p1_AMove += PitchDown;

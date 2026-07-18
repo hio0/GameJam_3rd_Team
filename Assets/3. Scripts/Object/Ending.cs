@@ -28,6 +28,8 @@ public class Ending : MonoBehaviour
     public CanvasGroup creditB;
     public RectTransform credit;
     public RectTransform photo;
+    public float photoDuration;
+    public event Action OnPhotoMove;
 
     private void Awake()
     {
@@ -127,49 +129,31 @@ public class Ending : MonoBehaviour
         float duration = 30f;
 
         RectTransform latter = letter.GetComponent<RectTransform>();
+        Vector2 letterEnd = new Vector2(437.9f, 0);
 
         while (true)
         {
-            timer += Time.deltaTime;
+        timer += Time.deltaTime;
+        float t = Mathf.Clamp01(timer / duration);
+        float smoothT = Mathf.SmoothStep(0, 1, t);
 
-            float t = Mathf.Clamp01(timer / duration);
+        latter.anchoredPosition = Vector3.Lerp(latter.anchoredPosition, letterEnd, smoothT);
+        float z = Mathf.LerpAngle(latter.eulerAngles.z, -4.58f, smoothT);
+        latter.rotation = Quaternion.Euler(0, 0, z);
 
-            // 감속 곡선 (처음 빠르고 끝에서 느려짐)
-            float smoothT = Mathf.SmoothStep(0, 1, t);
-
-            // 이동
-            latter.anchoredPosition = Vector3.Lerp(
-                latter.anchoredPosition,
-                new Vector2(437.9f, 0),
-                smoothT
-            );
-
-            // Z축 회전
-            float z = Mathf.LerpAngle(
-                latter.eulerAngles.z,
-                -4.58f,
-                smoothT
-            );
-
-            latter.rotation = Quaternion.Euler(0, 0, z);
-
-            if (t >= 1f)
-            {
-                break;
-            }
-
-            yield return null;
-        }
-
-        Vector2 target = new Vector2(0, -359.82f);
-        while ((photo.anchoredPosition - target).sqrMagnitude > 0.001)
+        if (Vector2.Distance(latter.anchoredPosition, letterEnd) < 0.5f || t >= 1f)
         {
-            float y = Mathf.Lerp(photo.anchoredPosition.y, target.y, Time.deltaTime * 3f);
-
-            photo.anchoredPosition = new Vector2(photo.anchoredPosition.x, y);
-            yield return null;
+            latter.anchoredPosition = letterEnd;
+            latter.rotation = Quaternion.Euler(0, 0, -4.58f);
+            OnPhotoMove?.Invoke();
+            break;
         }
 
+        yield return null;
+    }
+
+        
+    Debug.Log("fdf");
         yield return new WaitForSeconds(10f);
 
         DOTween.DOFade(creditB, 1, 1f);

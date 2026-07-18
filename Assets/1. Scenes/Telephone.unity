@@ -261,7 +261,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 105.7, y: 0}
+  m_AnchoredPosition: {x: 105.70001, y: 0}
   m_SizeDelta: {x: 211.4, y: 1284.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &483536850
@@ -455,6 +455,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 952022452}
     m_Modifications:
+    - target: {fileID: 509019807695613976, guid: 5b2838432261fc14dab366e3af53dea1, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 189441187, guid: ef7d511a4d3661842a016844bd88f175, type: 3}
+    - target: {fileID: 5086094057638043994, guid: 5b2838432261fc14dab366e3af53dea1, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 189
+      objectReference: {fileID: 0}
+    - target: {fileID: 5086094057638043994, guid: 5b2838432261fc14dab366e3af53dea1, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 178
+      objectReference: {fileID: 0}
     - target: {fileID: 5426366486972255626, guid: 5b2838432261fc14dab366e3af53dea1, type: 3}
       propertyPath: m_Name
       value: GetLetterP

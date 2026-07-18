@@ -6728,6 +6728,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1696158977}
     m_Modifications:
+    - target: {fileID: 509019807695613976, guid: 5b2838432261fc14dab366e3af53dea1, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -1314884408, guid: 0fb921e8b7d5da246ae0620019fde867, type: 3}
+    - target: {fileID: 5086094057638043994, guid: 5b2838432261fc14dab366e3af53dea1, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 268
+      objectReference: {fileID: 0}
+    - target: {fileID: 5086094057638043994, guid: 5b2838432261fc14dab366e3af53dea1, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 243
+      objectReference: {fileID: 0}
     - target: {fileID: 5426366486972255626, guid: 5b2838432261fc14dab366e3af53dea1, type: 3}
       propertyPath: m_Name
       value: GetLetterP

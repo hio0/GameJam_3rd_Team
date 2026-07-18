@@ -129,7 +129,7 @@ public class Picture : MonoBehaviour
 
         float percent = (float)erasedPixelCount / totalPixelCount;
 
-        if (percent >= 0.93f)
+        if (percent >= 0.97f)
         {
             FixManager.fix.FixCompleted();
         }

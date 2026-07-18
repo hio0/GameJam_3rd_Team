@@ -41,6 +41,8 @@ public class PhoneDial : MonoBehaviour
     // DialBuilder가 Awake에서 만든 복제본을 Start에서 수집
     private void Start()
     {
+        FadeObject.fade.FadeIn(1.5f);
+
         plateImages = plate.GetComponentsInChildren<Image>();
         wheelImages = wheel.GetComponentsInChildren<Image>();
 
